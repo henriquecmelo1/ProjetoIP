@@ -1,5 +1,4 @@
 
-
 import pygame as pg
 from pygame.locals import *
 from sys import exit
@@ -9,7 +8,7 @@ pg.init()
 largura = 800
 altura = 600
 tela = pg.display.set_mode((largura, altura))
-fundo = pg.image.load("fundo.jpg")
+fundo = pg.image.load("projeto-ip/fundo.jpg")
 relogio = pg.time.Clock()
 z = 0
 w = 0
@@ -18,20 +17,21 @@ pronto = False
 crachas = 3
 debuff = 0
 rodando = True
-musica_fundo = pg.mixer.music.load("musicafundo.mp3.mp3")
-pg.mixer.music.play(-1)
+#musica_fundo = pg.mixer.music.load("projeto-ip/BoxCat Games - Epic Song.mp3")
+#pg.mixer.music.play(-1)
 
+#-----------------------CRIANDO OS PERSONAGENS-----------------------------
 
 class Cracha(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load("cracha.png"))
+        self.sprites.append(pg.image.load("projeto-ip/cracha.png"))
         self.image = self.sprites[0]
         self.rect = self.image.get_rect()
         self.rect.y = randint(50, 550)
         self.rect.x = randint(50, 750)
-        self.image = pg.transform.scale(self.image, (64*0.8, 64*0.8))
+        self.image = pg.transform.scale(self.image, (int(64*0.8), int(64*0.8)))
         self.mask = pg.mask.from_surface(self.image)
 
     def update(self):
@@ -45,12 +45,12 @@ class Gota(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load("gotinha-1.png.png"))
-        self.sprites.append(pg.image.load("gotinha-2.png.png"))
-        self.sprites.append(pg.image.load("gotinha-3.png.png"))
-        self.sprites.append(pg.image.load("gotinha-4.png.png"))
-        self.sprites.append(pg.image.load("gotinha-5.png.png"))
-        self.sprites.append(pg.image.load("gotinha-6.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-1.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-2.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-3.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-4.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-5.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-6.png.png"))
         self.atual = 0
         self.image = self.sprites[self.atual]
         self.rect = self.image.get_rect()
@@ -73,17 +73,17 @@ class Reidograd(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load("reidograd-1.png.png"))
-        self.sprites.append(pg.image.load("reidograd-2.png.png"))
-        self.sprites.append(pg.image.load("reidograd-3.png.png"))
-        self.sprites.append(pg.image.load("reidograd-4.png.png"))
-        self.sprites.append(pg.image.load("reidograd-5.png.png"))
-        self.sprites.append(pg.image.load("reidograd-6.png.png"))
-        self.sprites.append(pg.image.load("reidograd-7.png.png"))
-        self.sprites.append(pg.image.load("reidograd-8.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-1.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-2.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-3.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-4.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-5.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-6.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-7.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-8.png.png"))
         self.atual = 0
         self.image = self.sprites[self.atual]
-        self.image = pg.transform.scale(self.image, (64*1.5, 64*1.5))
+        self.image = pg.transform.scale(self.image, (int(64*1.5), int(64*1.5)))
         self.mask = pg.mask.from_surface(self.image)
 
         self.rect = self.image.get_rect()
@@ -94,18 +94,35 @@ class Reidograd(pg.sprite.Sprite):
         if self.atual >= 8:
             self.atual = 0
         self.image = self.sprites[self.atual]
-        self.image = pg.transform.scale(self.image, (64 * 1.5, 64 * 1.5))
-        if self.rect.topright[0] <= largura+30:
-            self.rect.x += 10
+        self.image = pg.transform.scale(self.image, (int(64*1.5), int(64*1.5)))
+
+        #-----------------REI SE MEXENDO---------------------
+        if crachas == 0:
+            if self.rect.x > z:
+                self.rect.x += 4
+            elif self.rect.x < z:
+                self.rect.x -= 4
+
+            if self.rect.y > w:
+                self.rect.y += 4
+            elif self.rect.y < w:
+                self.rect.y -= 4        
         else:
-            self.rect.x = 0
-            self.rect.y = randint(50,600)
+            if self.rect.x > z:
+                self.rect.x -= 4
+            elif self.rect.x < z:
+                self.rect.x += 4
+
+            if self.rect.y > w:
+                self.rect.y -= 4
+            elif self.rect.y < w:
+                self.rect.y += 4
 
 class Marmita(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load('almirante.png'))
+        self.sprites.append(pg.image.load('projeto-ip/almirante.png'))
         self.image = self.sprites[0]
         self.rect = self.image.get_rect()
         self.rect.x = randint(50,750)
@@ -113,6 +130,7 @@ class Marmita(pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
 
 
+#----------------------------SPRITES--------------------------
 
 cracha = Cracha()
 rei = Reidograd()
@@ -133,8 +151,8 @@ comida = pg.sprite.Group()
 comida.add(marmita)
 
 
-
-while True:
+#---------------------------JOGO RODANDO-------------------------------
+while True:  
     tela.blit(fundo, (0, 0))
     relogio.tick(30)
     mensagem4 = f"Crachas Restantes: {crachas}"
@@ -146,16 +164,27 @@ while True:
             pg.quit()
             exit()
     if rodando:
-        if debuff == 0:
+
+        #----------------PERSONAGEM SE MEXENDO--------------
+        if debuff <= 0:
             if pg.key.get_pressed()[K_a]:
-                z = z - 10
+                z = z - 11
             if pg.key.get_pressed()[K_d]:
-                z = z + 10
+                z = z + 11
             if pg.key.get_pressed()[K_w]:
-                w = w - 10
+                w = w - 11
             if pg.key.get_pressed()[K_s]:
-                w = w + 10
+                w = w + 11
         elif debuff == 1:
+            if pg.key.get_pressed()[K_a]:
+                z = z - 9
+            if pg.key.get_pressed()[K_d]:
+                z = z + 9
+            if pg.key.get_pressed()[K_w]:
+                w = w - 9
+            if pg.key.get_pressed()[K_s]:
+                w = w + 9
+        elif debuff == 2:
             if pg.key.get_pressed()[K_a]:
                 z = z - 7
             if pg.key.get_pressed()[K_d]:
@@ -164,7 +193,7 @@ while True:
                 w = w - 7
             if pg.key.get_pressed()[K_s]:
                 w = w + 7
-        elif debuff == 2:
+        elif debuff == 3:
             if pg.key.get_pressed()[K_a]:
                 z = z - 5
             if pg.key.get_pressed()[K_d]:
@@ -173,18 +202,14 @@ while True:
                 w = w - 5
             if pg.key.get_pressed()[K_s]:
                 w = w + 5
-        elif debuff == 3:
-            if pg.key.get_pressed()[K_a]:
-                z = z - 2
-            if pg.key.get_pressed()[K_d]:
-                z = z + 2
-            if pg.key.get_pressed()[K_w]:
-                w = w - 2
-            if pg.key.get_pressed()[K_s]:
-                w = w + 2
+
+
+        
+
     else:
         pass
 
+    #-------------PEGANDO CRACHA---------------
     colisao_cracha = pg.sprite.spritecollide(gota, coletaveis, False, pg.sprite.collide_mask)
     if colisao_cracha:
         crachas -= 1
@@ -198,16 +223,16 @@ while True:
     else:
         pass
 
+    #---------------PEGANDO ALMIR---------------
     colisao_comida = pg.sprite.spritecollide(gota, comida, True, pg.sprite.collide_mask)
     if colisao_comida:
-        if debuff > 0:
-            debuff -=1
-        else:
-            pass
+        debuff -=1
+        
     else:
         pass
 
 
+    #--------------------BATENDO NO REI--------------------
     colisao_inimigo = pg.sprite.spritecollide(gota, inimigos, False, pg.sprite.collide_mask)
     if colisao_inimigo and not pronto:
         mensagem1 = "Você Perdeu!"
