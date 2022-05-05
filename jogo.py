@@ -1,5 +1,4 @@
 
-
 import pygame as pg
 from pygame.locals import *
 from sys import exit
@@ -9,7 +8,7 @@ pg.init()
 largura = 800
 altura = 600
 tela = pg.display.set_mode((largura, altura))
-fundo = pg.image.load("fundo.jpg")
+fundo = pg.image.load("projeto-ip/fundo.jpg")
 relogio = pg.time.Clock()
 z = 0
 w = 0
@@ -18,20 +17,20 @@ pronto = False
 crachas = 3
 debuff = 0
 rodando = True
-musica_fundo = pg.mixer.music.load("musicafundo.mp3.mp3")
-pg.mixer.music.play(-1)
+#musica_fundo = pg.mixer.music.load("projeto-ip/BoxCat Games - Epic Song.mp3")
+#pg.mixer.music.play(-1)
 
 
 class Cracha(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load("cracha.png"))
+        self.sprites.append(pg.image.load("projeto-ip/cracha.png"))
         self.image = self.sprites[0]
         self.rect = self.image.get_rect()
         self.rect.y = randint(50, 550)
         self.rect.x = randint(50, 750)
-        self.image = pg.transform.scale(self.image, (64*0.8, 64*0.8))
+        self.image = pg.transform.scale(self.image, (int(64*0.8), int(64*0.8)))
         self.mask = pg.mask.from_surface(self.image)
 
     def update(self):
@@ -45,12 +44,12 @@ class Gota(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load("gotinha-1.png.png"))
-        self.sprites.append(pg.image.load("gotinha-2.png.png"))
-        self.sprites.append(pg.image.load("gotinha-3.png.png"))
-        self.sprites.append(pg.image.load("gotinha-4.png.png"))
-        self.sprites.append(pg.image.load("gotinha-5.png.png"))
-        self.sprites.append(pg.image.load("gotinha-6.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-1.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-2.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-3.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-4.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-5.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/gotinha-6.png.png"))
         self.atual = 0
         self.image = self.sprites[self.atual]
         self.rect = self.image.get_rect()
@@ -73,17 +72,17 @@ class Reidograd(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load("reidograd-1.png.png"))
-        self.sprites.append(pg.image.load("reidograd-2.png.png"))
-        self.sprites.append(pg.image.load("reidograd-3.png.png"))
-        self.sprites.append(pg.image.load("reidograd-4.png.png"))
-        self.sprites.append(pg.image.load("reidograd-5.png.png"))
-        self.sprites.append(pg.image.load("reidograd-6.png.png"))
-        self.sprites.append(pg.image.load("reidograd-7.png.png"))
-        self.sprites.append(pg.image.load("reidograd-8.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-1.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-2.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-3.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-4.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-5.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-6.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-7.png.png"))
+        self.sprites.append(pg.image.load("projeto-ip/reidograd-8.png.png"))
         self.atual = 0
         self.image = self.sprites[self.atual]
-        self.image = pg.transform.scale(self.image, (64*1.5, 64*1.5))
+        self.image = pg.transform.scale(self.image, (int(64*1.5), int(64*1.5)))
         self.mask = pg.mask.from_surface(self.image)
 
         self.rect = self.image.get_rect()
@@ -94,18 +93,46 @@ class Reidograd(pg.sprite.Sprite):
         if self.atual >= 8:
             self.atual = 0
         self.image = self.sprites[self.atual]
-        self.image = pg.transform.scale(self.image, (64 * 1.5, 64 * 1.5))
-        if self.rect.topright[0] <= largura+30:
-            self.rect.x += 10
+        self.image = pg.transform.scale(self.image, (int(64*1.5), int(64*1.5)))
+
+
+        if crachas == 0:
+            if self.rect.x > z:
+                self.rect.x += 5
+            elif self.rect.x < z:
+                self.rect.x -= 5
+
+            if self.rect.y > w:
+                self.rect.y += 5
+            elif self.rect.y < w:
+                self.rect.y -= 5
+
+            
         else:
-            self.rect.x = 0
-            self.rect.y = randint(50,600)
+            if self.rect.x > z:
+                self.rect.x -= 5
+            elif self.rect.x < z:
+                self.rect.x += 5
+
+            if self.rect.y > w:
+                self.rect.y -= 5
+            elif self.rect.y < w:
+                self.rect.y += 5
+
+
+            
+
+        # if self.rect.topright[0] <= largura+30:
+        #     self.rect.x += 10
+        # else:
+        #     self.rect.x = 0
+        #     self.rect.y = randint(50,600)
 
 class Marmita(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.sprites = []
-        self.sprites.append(pg.image.load('almirante.png'))
+        self.sprites.append(pg.image.load('projeto-ip/almirante.png'))
         self.image = self.sprites[0]
         self.rect = self.image.get_rect()
         self.rect.x = randint(50,750)
@@ -135,6 +162,8 @@ comida.add(marmita)
 
 
 while True:
+    
+
     tela.blit(fundo, (0, 0))
     relogio.tick(30)
     mensagem4 = f"Crachas Restantes: {crachas}"
@@ -148,6 +177,15 @@ while True:
     if rodando:
         if debuff == 0:
             if pg.key.get_pressed()[K_a]:
+                z = z - 12
+            if pg.key.get_pressed()[K_d]:
+                z = z + 12
+            if pg.key.get_pressed()[K_w]:
+                w = w - 12
+            if pg.key.get_pressed()[K_s]:
+                w = w + 12
+        elif debuff == 1:
+            if pg.key.get_pressed()[K_a]:
                 z = z - 10
             if pg.key.get_pressed()[K_d]:
                 z = z + 10
@@ -155,33 +193,28 @@ while True:
                 w = w - 10
             if pg.key.get_pressed()[K_s]:
                 w = w + 10
-        elif debuff == 1:
-            if pg.key.get_pressed()[K_a]:
-                z = z - 7
-            if pg.key.get_pressed()[K_d]:
-                z = z + 7
-            if pg.key.get_pressed()[K_w]:
-                w = w - 7
-            if pg.key.get_pressed()[K_s]:
-                w = w + 7
         elif debuff == 2:
             if pg.key.get_pressed()[K_a]:
-                z = z - 5
+                z = z - 8
             if pg.key.get_pressed()[K_d]:
-                z = z + 5
+                z = z + 8
             if pg.key.get_pressed()[K_w]:
-                w = w - 5
+                w = w - 8
             if pg.key.get_pressed()[K_s]:
-                w = w + 5
+                w = w + 8
         elif debuff == 3:
             if pg.key.get_pressed()[K_a]:
-                z = z - 2
+                z = z - 6
             if pg.key.get_pressed()[K_d]:
-                z = z + 2
+                z = z + 6
             if pg.key.get_pressed()[K_w]:
-                w = w - 2
+                w = w - 6
             if pg.key.get_pressed()[K_s]:
-                w = w + 2
+                w = w + 6
+
+
+        
+
     else:
         pass
 
